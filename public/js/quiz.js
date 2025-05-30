@@ -1,7 +1,6 @@
 (async function() {
   const params    = new URLSearchParams(location.search);
   const category  = params.get('category');
-  // const questions = QUESTIONS[category] || [];
   const container = document.getElementById('quiz-container');
   const tracker   = document.getElementById('score-tracker');
 
