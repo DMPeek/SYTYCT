@@ -3,9 +3,14 @@
   const category  = params.get('category');
   const questions = QUESTIONS[category] || [];
   const container = document.getElementById('quiz-container');
-  const correct   = new Set();
+  const tracker   = document.getElementById('score-tracker');
 
-  questions.forEach((q,i) => {
+  // initialize
+  let currentScore = 0;
+  localStorage.setItem(`currentScore_${category}`, 0);
+  tracker.textContent = `Score: ${currentScore}`;
+
+  questions.forEach((q, i) => {
     const div = document.createElement('div');
     div.className = 'question';
     div.innerHTML = `<p>${i+1}. ${q.question}</p>`;
@@ -15,26 +20,38 @@
       const btn = document.createElement('button');
       btn.className = 'option-btn';
       btn.textContent = opt;
+
       btn.addEventListener('click', () => {
-        if (div.querySelector('.alert')) return;
+        if (div.querySelector('.alert')) return;  // only first click
+
+        // feedback
         const mark = document.createElement('div');
         mark.className = opt === q.answer ? 'alert green' : 'alert red';
         mark.textContent = opt === q.answer ? 'Correct!' : 'Incorrect';
         div.appendChild(mark);
-        if (opt === q.answer) correct.add(i);
+
+        // update score if correct
+        if (opt === q.answer) {
+          currentScore++;
+          localStorage.setItem(`currentScore_${category}`, currentScore);
+          tracker.textContent = `Score: ${currentScore}`;
+        }
+
+        // disable further clicks on this question
         div.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
       });
+
       div.appendChild(btn);
     });
   });
 
+  // submit
   const submit = document.createElement('button');
   submit.className = 'btn-round';
   submit.textContent = 'Submit';
   submit.addEventListener('click', () => {
-    const score = correct.size;
     window.location.href =
-      `results.html?score=${score}&total=${questions.length}&category=${category}`;
+      `results.html?score=${currentScore}&total=${questions.length}&category=${category}`;
   });
   container.appendChild(submit);
 })();

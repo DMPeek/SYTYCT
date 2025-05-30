@@ -30,7 +30,7 @@
   }
   container.appendChild(heading);
 
-  // always show a still image
+  // still image
   const img = document.createElement('img');
   img.src       = CATEGORY_IMAGES[category];
   img.alt       = category;

@@ -81,12 +81,19 @@ header p {
 /* Quiz page */
 #quiz-container {
   max-width: 650px;
-  margin: 40px auto;
+  margin: 20px auto 40px;
   background: var(--card-bg);
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: left;
+}
+#score-tracker {
+  font-size: 1.2rem;
+  margin: 20px auto 0;
+  max-width: 650px;
+  text-align: right;
+  padding: 0 30px;
 }
 .question {
   margin-bottom: 25px;
