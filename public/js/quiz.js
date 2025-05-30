@@ -14,7 +14,7 @@
       answer:q.Answer
     }))
   } catch {
-    container.innerHTML = `CODE MACHINE BROKE: ${err.message}</div>`
+    container.innerHTML = `CODE MACHINE BROKE: ${err.message}`
     return
   }
 
