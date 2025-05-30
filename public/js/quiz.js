@@ -1,9 +1,23 @@
 (async function() {
   const params    = new URLSearchParams(location.search);
   const category  = params.get('category');
-  const questions = QUESTIONS[category] || [];
+  // const questions = QUESTIONS[category] || [];
   const container = document.getElementById('quiz-container');
   const tracker   = document.getElementById('score-tracker');
+
+  let questions = []
+  try {
+    const res = await fetch(`http://localhost:3000/${category}`);
+    const data = await res.json();
+    questions = data.map(q => ({
+      question: q.Q,
+      options: q.Options,
+      answer:q.Answer
+    }))
+  } catch {
+    container.innerHTML = `CODE MACHINE BROKE: ${err.message}</div>`
+    return
+  }
 
   // initialize
   let currentScore = 0;
