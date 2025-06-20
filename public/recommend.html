@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Recommendations</title>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+    <h1>Travel Recommendations</h1>
+    <form id="recommend-form">
+        <input type="text" id="user-prompt" placeholder="what kind of place are you looking for" required style="width:60%; padding:8px;"/>
+        <button type="submit" class="btn-round">Ask AI</button>
+    </form>
+    <div id="recommend-result" style="margin-top: 30px;"></div>
+    <button id="return-home" class="btn-round" style="margin-top:20px;">Home</button>
+    
+    <script src="js/recommend.js"></script>
+</body>
+</html>

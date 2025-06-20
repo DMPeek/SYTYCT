@@ -11,7 +11,7 @@
     questions = data.map(q => ({
       question: q.Q,
       options: q.Options,
-      answer:q.Answer
+      answer: q.Answer
     }))
   } catch {
     container.innerHTML = `CODE MACHINE BROKE: ${err.message}`

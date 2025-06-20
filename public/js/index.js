@@ -11,3 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+document.getElementById("recommend-btn").onclick = () => {
+  window.location.href="recommend.html";
+};

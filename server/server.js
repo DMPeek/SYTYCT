@@ -2,6 +2,7 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
+const openai = require("./services/openai")
 
 const mongodb_uri = process.env.MONGODB_URI;
 const db = process.env.DB;
@@ -66,6 +67,49 @@ app.get("/parks", async (request, response)=>{
     }
 });
 
+app.post('/ask', async (request, response) => {
+    const {provider, prompt} = request.body;
+    try {
+        const database = await client.db(db)
+        const collections = [
+            {name: "Beaches", coll: collection1},
+            {name: "Mountains", coll: collection2},
+            {name: "Nature", coll: collection3},
+            {name: "Parks", coll: collection4}
+        ];
+        let places = [];
+        for (const {name, coll} of collections) {
+            const docs = await database.collection(coll).find().toArray();
+            docs.forEach(doc => {
+                places.push({
+                    category: name,
+                    name: doc.Answer,
+                    description: doc.Q
+                });
+            });
+        }
+
+        const placesList = places.map(
+            place => `- ${place.name} (${place.category}): ${place.description}`
+        ).join('\n');
+
+        const systemPrompt = `You are a travel recommendation assistant. Only recommend places from the following list. 
+        If the user asks for something not in the list, politely say you don't have a recommendation. 
+        If they ask a generic question such as 'What kind of mountains do you recommend?' then give them recommendations related the collection they ask about.
+
+        Here are the places you can recommend:
+        ${placesList}
+
+        User prompt: ${prompt}
+        `;
+
+        const result = await openai(systemPrompt);
+        response.status(200).json({result});
+    } catch(error) {
+        console.error(error.response?.data || error.message);
+        response.status(500).json({error: 'Something went wrong with the LLM provider'});
+    } 
+});
 
 
 
